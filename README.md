@@ -31,51 +31,22 @@ RadarSci — a radar for scientific literature
 ✦ Limit: 2                                  ✦ Sort: Score
 ✦ Coverage: All                             ✦ Journals searched (1) [Nature Microbiology]
 
-                      Full coverage (all 1 keyword matched)
-┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━┓
-┃ Journal          ┃ Title                                ┃ Date                 ┃ RadarSci   ┃ Days  ┃
-┃                  ┃                                      ┃                      ┃ score      ┃ ago   ┃
-┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━┩
-│ Nature Microbio...│ Long-read metagenomics for strain   │ Wednesday, 2025-10-22│ 18.69      │ 13    │
-│                  │ tracking after faecal microbiota     │                      │            │       │
-│                  │ transplant.                          │                      │            │       │
-├──────────────────┼──────────────────────────────────────┼──────────────────────┼────────────┼───────┤
-│ Nature Microbio...│ Human immunodeficiency virus and    │ Thursday, 2025-10-30 │ 12.17      │ 5     │
-│                  │ antiretroviral therapies exert       │                      │            │       │
-│                  │ distinct influences across diverse   │                      │            │       │
-│                  │ gut microbiomes.                     │                      │            │       │
-└──────────────────┴──────────────────────────────────────┴──────────────────────┴────────────┴───────┘
+Coverage: Full (all 1 keyword matched)
+
+Journal             Date                  Score   Days ago   Title
+Nature Microbiology Wednesday, 2025-10-22 18.69   13         Long-read metagenomics for strain tracking after faecal microbiota transplant.
+Nature Microbiology Thursday, 2025-10-30  12.17   5          Human immunodeficiency virus and antiretroviral therapies exert distinct influences across diverse gut microbiomes.
 ```
 
 Peek at the neon HTML cards by opening `docs/examples/report-preview.html` in a browser. The cards look like:
 
-```html
-<article class="card">
-  <header>
-    <h2>
-      <a href="https://doi.org/10.1016/j.tim.2025.10.009" target="_blank" rel="noopener">
-        Mangrove microbiomes as hidden ecological gatekeepers.
-      </a>
-    </h2>
-    <div class="meta">
-      <span class="journal">Journal: Trends in Microbiology</span>
-      <span class="separator">|</span>
-      <span class="date">Tuesday, 2025-10-28</span>
-      <span class="separator">|</span>
-      <span class="age">Days ago: 7</span>
-      <span class="separator">|</span>
-      <span class="score">
-        <span class="badge">RadarSci score</span>
-        <span class="value">22.60</span>
-      </span>
-    </div>
-  </header>
-  <p class="authors">Tabugo SR.</p>
-  <p class="summary">
-    Mangroves are known worldwide but their concealed network of microbiomes is poorly understood...
-  </p>
-</article>
-```
+> **HTML report sneak peek**
+> - Journal: Trends in Microbiology
+> - Date: Tuesday, 2025-10-28
+> - Days ago: 7
+> - RadarSci score: 22.60
+> - Authors: Tabugo SR.
+> - Summary: Mangroves are known worldwide but their concealed network of microbiomes is poorly understood...
 
 ## Container image
 
