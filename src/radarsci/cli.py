@@ -8,6 +8,8 @@ import asyncio
 from datetime import UTC, datetime
 from enum import Enum
 from pathlib import Path
+import os
+import sys
 from typing import List, Sequence, Optional
 
 import httpx
@@ -28,7 +30,34 @@ from .relevance import compute_relevance
 from .reporting import render_cli_report, write_html_report
 
 app = typer.Typer(add_completion=False, no_args_is_help=True)
-console = Console()
+
+
+def _create_console() -> Console:
+    """
+    Build a console that keeps rich layouts readable when stdout is not a TTY,
+    for example inside non-interactive Docker runs.
+    """
+
+    width_env = os.getenv("RADARSCI_CONSOLE_WIDTH")
+    default_width = 244
+    kwargs: dict[str, object] = {}
+
+    if width_env:
+        try:
+            kwargs["width"] = max(80, int(width_env))
+        except ValueError:
+            kwargs["width"] = default_width
+    elif not sys.stdout.isatty():
+        kwargs["width"] = default_width
+
+    if not sys.stdout.isatty():
+        kwargs.setdefault("force_terminal", True)
+        kwargs.setdefault("width", default_width)
+
+    return Console(**kwargs)
+
+
+console = _create_console()
 
 
 class ReportFormat(str, Enum):

@@ -38,7 +38,19 @@ Nature Microbiology Wednesday, 2025-10-22 18.69   13         Long-read metagenom
 Nature Microbiology Thursday, 2025-10-30  12.17   5          Human immunodeficiency virus and antiretroviral therapies exert distinct influences across diverse gut microbiomes.
 ```
 
-Peek at the neon HTML cards by opening `docs/examples/report-preview.html` in a browser. The cards look like:
+Generate the exact same search as a neon HTML report (keywords and journal included) with:
+
+```bash
+pixi run radarsci \
+  --keyword metagenomics \
+  --journal "Nature Microbiology" \
+  --limit 2 \
+  --days 30 \
+  --format web \
+  --output outputs/metagenomics.html
+```
+
+Peek at the neon HTML cards by opening [docs/examples/report-preview.html](docs/examples/report-preview.html) in a browser—the bundled sample shows an end-to-end report with clickable DOI links and radar scores. The cards look like:
 
 > **HTML report sneak peek**
 > - Journal: Trends in Microbiology
@@ -50,23 +62,66 @@ Peek at the neon HTML cards by opening `docs/examples/report-preview.html` in a 
 
 ## Container image
 
-The repository ships with a multi-stage `Dockerfile` that bakes the project into the latest Pixi runtime (0.59.x). Build and run locally:
+### Docker usage
+
+**Build & tag**
 
 ```bash
-docker build -t radarsci .
-docker run --rm -it radarsci --help
+# build from the local checkout
+docker build -t astrogenomics/radarsci:dev .
+
+# run the CLI help locally
+docker run --rm -it astrogenomics/radarsci:dev --help
 ```
 
-Because the entrypoint activates the Pixi environment for you, the container accepts the same arguments as the CLI:
+**Run searches**
 
 ```bash
-docker run --rm radarsci --keyword "gut microbiome" --journal all --limit 10
+# CLI output (non-interactive runs default to 244 cols; override with RADARSCI_CONSOLE_WIDTH)
+docker run --rm astrogenomics/radarsci:dev --keyword "gut microbiome" --journal all --limit 10
+
+# Generate an HTML report and persist it on the host
+docker run --rm \
+  -v "$(pwd)/outputs:/app/outputs" \
+  astrogenomics/radarsci:dev \
+  --keyword metagenomics \
+  --journal "Nature Microbiology" \
+  --limit 5 \
+  --format web \
+  --output outputs/metagenomics.html
 ```
 
-Mount a host directory if you want to persist HTML reports:
+**Publish to Docker Hub**
 
 ```bash
-docker run --rm -v "$(pwd)/outputs:/app/outputs" radarsci --format web --output outputs/report.html
+# authenticate once (or rely on CI secrets)
+docker login -u astrogenomics
+
+# tag the dev build for release and push
+docker tag astrogenomics/radarsci:dev astrogenomics/radarsci:v0.2.0
+docker tag astrogenomics/radarsci:dev astrogenomics/radarsci:latest
+docker push astrogenomics/radarsci:v0.2.0
+docker push astrogenomics/radarsci:latest
+
+# external users: pull and run from Docker Hub
+docker pull astrogenomics/radarsci:latest
+docker run --rm astrogenomics/radarsci --keyword "gut microbiome" --journal all --limit 10
+docker run --rm \
+  -v "$(pwd)/outputs:/app/outputs" \
+  astrogenomics/radarsci \
+  --keyword metagenomics \
+  --journal "Nature Microbiology" \
+  --limit 5 \
+  --format web \
+  --output outputs/metagenomics.html
+```
+
+GitHub releases automatically push multi-arch tags (`latest`, `vX.Y.Z`) via `.github/workflows/container-release.yml`. For one-off experiments, swap in your own namespace:
+
+```bash
+docker buildx build --push \
+  --platform linux/amd64,linux/arm64 \
+  --tag yourhandle/radarsci:pr123 .
 ```
 
 ## Custom searches
