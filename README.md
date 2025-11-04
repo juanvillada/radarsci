@@ -50,7 +50,7 @@ pixi run radarsci \
   --output outputs/metagenomics.html
 ```
 
-Peek at the neon HTML cards by opening [docs/examples/report-preview.html](https://raw.githubusercontent.com/juanvillada/radarsci/main/docs/examples/report-preview.html) in a browser—the bundled sample shows an end-to-end report with clickable DOI links and radar scores. The cards look like:
+Peek at the neon HTML cards via [this live preview](https://htmlpreview.github.io/?https://raw.githubusercontent.com/juanvillada/radarsci/main/docs/examples/report-preview.html) (renders the bundled sample HTML with clickable DOI links and radar scores). The cards look like:
 
 > **HTML report sneak peek**
 > - Journal: Trends in Microbiology
