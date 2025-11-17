@@ -1,12 +1,12 @@
 [workspace]
 authors = ["Juan C. Villada <jvillada@lbl.gov>"]
 channels = ["conda-forge"]
-name = "radarsci"
+name = "givelit"
 platforms = ["osx-arm64", "osx-64", "linux-64", "linux-aarch64", "win-64"]
 version = "0.1.0"
 
-[tasks.radarsci]
-cmd = "python -m radarsci"
+[tasks.givelit]
+cmd = "python -m givelit"
 env = { PYTHONPATH = "src" }
 
 [dependencies]

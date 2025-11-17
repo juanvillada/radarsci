@@ -11,7 +11,7 @@ permissions:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: astrogenomics/radarsci
+  IMAGE_NAME: astrogenomics/givelit
 
 jobs:
   build:

@@ -16,7 +16,7 @@ from .models import JournalConfig, Paper
 
 
 BASE_URL = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
-USER_AGENT = "RadarSci/0.2 (+https://github.com/jcvillada/radarsci)"
+USER_AGENT = "giveLit/0.2 (+https://github.com/juanvillada/givelit)"
 
 
 def _strip_html(value: str | None) -> str | None:
@@ -94,7 +94,7 @@ class EuropePMCFetcher:
 
     def __init__(self, timeout: float = 15.0, mailto: str | None = None) -> None:
         self._timeout = timeout
-        self._mailto = mailto or "radarsci@example.com"
+        self._mailto = mailto or "givelit@example.com"
 
     @property
     def timeout(self) -> float:

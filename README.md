@@ -1,6 +1,6 @@
-# RadarSci
+# giveLit
 
-RadarSci, a radar for scientific literature, is a Typer-powered CLI that keeps laboratory teams up to date with the latest, most relevant papers from the journals they care about. It queries the Europe PMC literature service for the chosen journals, scores candidates using the supplied keywords, and renders either a sleek terminal table or a minimalist HTML report with clickable cards.
+giveLit: give me literature is a Typer-powered CLI that keeps laboratory teams up to date with the latest, most relevant papers from the journals they care about. It queries the Europe PMC literature service for the chosen journals, scores candidates using the supplied keywords, and renders either a sleek terminal table or a minimalist HTML report with clickable cards.
 
 ## Requirements
 
@@ -15,18 +15,18 @@ All runtime dependencies are specified in `pixi.toml`. No `pip` steps required.
 pixi install
 
 # Show usage information
-pixi run radarsci --help
+pixi run givelit --help
 
 # Scan the default journals with a 30-day window and CLI output
-pixi run radarsci
+pixi run givelit
 ```
 
 ## Example outputs
 
 ```text
-$ pixi run radarsci --keyword metagenomics --journal "Nature Microbiology" --limit 2 --days 30
+$ pixi run givelit --keyword metagenomics --journal "Nature Microbiology" --limit 2 --days 30
 
-RadarSci — a radar for scientific literature
+giveLit — give me literature
 ✦ Keywords: "metagenomics"                  ✦ Days window: last 30 days
 ✦ Limit: 2                                  ✦ Sort: Score
 ✦ Coverage: All                             ✦ Journals searched (1) [Nature Microbiology]
@@ -41,22 +41,24 @@ Nature Microbiology Thursday, 2025-10-30  12.17   5          Human immunodeficie
 Generate the exact same search as a neon HTML report (keywords and journal included) with:
 
 ```bash
-pixi run radarsci \
+pixi run givelit \
   --keyword metagenomics \
   --journal "Nature Microbiology" \
   --limit 2 \
   --days 30 \
   --format web \
-  --output outputs/metagenomics.html
+  --output givelit-reports/metagenomics.html
 ```
 
-Peek at the neon HTML cards via [this live preview](https://htmlpreview.github.io/?https://raw.githubusercontent.com/juanvillada/radarsci/main/docs/examples/report-preview.html) (renders the bundled sample HTML with clickable DOI links and radar scores). The cards look like:
+Prefer the default naming? Omit `--output` and giveLit will drop timestamped files such as `giveLit-output__metagenomics__20250130-153000.html` into the current directory.
+
+Peek at the neon HTML cards via [this live preview](https://htmlpreview.github.io/?https://raw.githubusercontent.com/juanvillada/givelit/main/docs/examples/report-preview.html) (renders the bundled sample HTML with clickable DOI links and giveLit scores). The cards look like:
 
 > **HTML report sneak peek**
 > - Journal: Trends in Microbiology
 > - Date: Tuesday, 2025-10-28
 > - Days ago: 7
-> - RadarSci score: 22.60
+> - giveLit score: 22.60
 > - Authors: Tabugo SR.
 > - Summary: Mangroves are known worldwide but their concealed network of microbiomes is poorly understood...
 
@@ -68,27 +70,27 @@ Peek at the neon HTML cards via [this live preview](https://htmlpreview.github.i
 
 ```bash
 # build from the local checkout
-docker build -t astrogenomics/radarsci:dev .
+docker build -t astrogenomics/givelit:dev .
 
 # run the CLI help locally
-docker run --rm -it astrogenomics/radarsci:dev --help
+docker run --rm -it astrogenomics/givelit:dev --help
 ```
 
 **Run searches**
 
 ```bash
-# CLI output (non-interactive runs default to 244 cols; override with RADARSCI_CONSOLE_WIDTH)
-docker run --rm astrogenomics/radarsci:dev --keyword "gut microbiome" --journal all --limit 10
+# CLI output (non-interactive runs default to 244 cols; override with GIVELIT_CONSOLE_WIDTH)
+docker run --rm astrogenomics/givelit:dev --keyword "gut microbiome" --journal all --limit 10
 
 # Generate an HTML report and persist it on the host
 docker run --rm \
-  -v "$(pwd)/outputs:/app/outputs" \
-  astrogenomics/radarsci:dev \
+  -v "$(pwd)/givelit-reports:/app/givelit-reports" \
+  astrogenomics/givelit:dev \
   --keyword metagenomics \
   --journal "Nature Microbiology" \
   --limit 5 \
   --format web \
-  --output outputs/metagenomics.html
+  --output givelit-reports/metagenomics.html
 ```
 
 **Publish to Docker Hub**
@@ -98,22 +100,22 @@ docker run --rm \
 docker login -u astrogenomics
 
 # tag the dev build for release and push
-docker tag astrogenomics/radarsci:dev astrogenomics/radarsci:v0.2.0
-docker tag astrogenomics/radarsci:dev astrogenomics/radarsci:latest
-docker push astrogenomics/radarsci:v0.2.0
-docker push astrogenomics/radarsci:latest
+docker tag astrogenomics/givelit:dev astrogenomics/givelit:v0.2.0
+docker tag astrogenomics/givelit:dev astrogenomics/givelit:latest
+docker push astrogenomics/givelit:v0.2.0
+docker push astrogenomics/givelit:latest
 
 # external users: pull and run from Docker Hub
-docker pull astrogenomics/radarsci:latest
-docker run --rm astrogenomics/radarsci --keyword "gut microbiome" --journal all --limit 10
+docker pull astrogenomics/givelit:latest
+docker run --rm astrogenomics/givelit --keyword "gut microbiome" --journal all --limit 10
 docker run --rm \
-  -v "$(pwd)/outputs:/app/outputs" \
-  astrogenomics/radarsci \
+  -v "$(pwd)/givelit-reports:/app/givelit-reports" \
+  astrogenomics/givelit \
   --keyword metagenomics \
   --journal "Nature Microbiology" \
   --limit 5 \
   --format web \
-  --output outputs/metagenomics.html
+  --output givelit-reports/metagenomics.html
 ```
 
 GitHub releases automatically push multi-arch tags (`latest`, `vX.Y.Z`) via `.github/workflows/container-release.yml`. For one-off experiments, swap in your own namespace:
@@ -121,7 +123,7 @@ GitHub releases automatically push multi-arch tags (`latest`, `vX.Y.Z`) via `.gi
 ```bash
 docker buildx build --push \
   --platform linux/amd64,linux/arm64 \
-  --tag yourhandle/radarsci:pr123 .
+  --tag yourhandle/givelit:pr123 .
 ```
 
 ## Custom searches
@@ -141,20 +143,20 @@ docker buildx build --push \
 Example:
 
 ```bash
-pixi run radarsci \
+pixi run givelit \
   --keyword metagenomics \
   --journal nature-microbiology \
   --journal cell-systems \
   --limit 10 \
   --days 60 \
   --format web \
-  --output outputs/metagenomics.html
+  --output givelit-reports/metagenomics.html
 ```
 
 All built-in journals in one go:
 
 ```bash
-pixi run radarsci \
+pixi run givelit \
   --keyword metagenomics \
   --journal all \
   --limit 10 \
@@ -162,13 +164,13 @@ pixi run radarsci \
   --sort score \
   --coverage all \
   --format web \
-  --output outputs/metagenomics.html
+  --output givelit-reports/metagenomics.html
 ```
 
 All journals plus the preprint servers for a specific topic:
 
 ```bash
-pixi run radarsci \
+pixi run givelit \
   --keyword "gut microbiome" \
   --journal all \
   --include-preprints \
@@ -188,7 +190,7 @@ pixi run radarsci \
 | `--coverage TEXT` | Coverage filter: `all` (default) shows every match level; `full` keeps only full keyword matches. |
 | `--format TEXT` | Output mode: `cli` (default) or `web`. |
 | `--skip-journal/-skip TEXT` | Exclude a journal key/name from the search (repeatable). |
-| `--output PATH` | Destination for the HTML report; omit to auto-generate a timestamped file. |
+| `--output PATH` | Destination for the HTML report; omit to auto-generate a timestamped `giveLit-output__<keywords>__<timestamp>.html` file. |
 | `--include-preprints` | Add arXiv and bioRxiv to the selected journals (including `--journal all`). |
 
 ## Built-in journal keywords
@@ -233,7 +235,7 @@ Preprint lookups are still backed by the Europe PMC API, using the publisher fee
 
 ## How relevance works
 
-RadarSci blends three signals for each returned article:
+giveLit blends three signals for each returned article:
 
 1. Keyword density, with extra weight when terms appear in the title or abstract.
 2. Europe PMC's relevance score for the underlying query.
@@ -256,13 +258,13 @@ Where:
 
 The final score is rounded to two decimals. Scores and the associated `D` ("days ago") are displayed in both the CLI and HTML reports.
 
-By default, RadarSci sorts by decreasing score and, within ties, by increasing `D`. Use `--sort recency` to prioritise fresher items or `--sort journal` to group by journal name.
+By default, giveLit sorts by decreasing score and, within ties, by increasing `D`. Use `--sort recency` to prioritise fresher items or `--sort journal` to group by journal name.
 
 Articles are grouped per journal and interleaved to guarantee that every requested journal is represented before the overall limit is reached. Remaining slots (if any) are backfilled by the highest-scoring papers regardless of journal.
 
 ## Data source
 
-- RadarSci uses the [Europe PMC REST API](https://europepmc.org/RestfulWebService) to perform `(keyword1 OR keyword2 ...) AND JOURNAL:"name"` searches with an optional publication date window.
+- giveLit uses the [Europe PMC REST API](https://europepmc.org/RestfulWebService) to perform `(keyword1 OR keyword2 ...) AND JOURNAL:"name"` searches with an optional publication date window.
 - Returned metadata (title, authors, abstract, DOI, relevance score) is normalised and stored locally in memory only.
 - Europe PMC requires no API keys, but we ship a descriptive `User-Agent` so that traffic is easy to attribute.
 

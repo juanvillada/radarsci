@@ -38,7 +38,7 @@ def _create_console() -> Console:
     for example inside non-interactive Docker runs.
     """
 
-    width_env = os.getenv("RADARSCI_CONSOLE_WIDTH")
+    width_env = os.getenv("GIVELIT_CONSOLE_WIDTH")
     default_width = 244
     kwargs: dict[str, object] = {}
 

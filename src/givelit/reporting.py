@@ -99,7 +99,7 @@ def render_cli_report(
     Print a compact table with hyperlinks to the console.
     """
 
-    header = Text("RadarSci — a radar for scientific literature", style="bold green")
+    header = Text("giveLit — give me literature", style="bold green")
     console.print(header)
 
     options = options or {}
@@ -168,7 +168,7 @@ def render_cli_report(
         table.add_column("Journal", style="magenta", no_wrap=True)
         table.add_column("Title", style="white", overflow="fold")
         table.add_column("Date", style="green", no_wrap=True)
-        table.add_column("RadarSci score", justify="right", style="bold cyan")
+        table.add_column("giveLit score", justify="right", style="bold cyan")
         table.add_column("Days ago", justify="right", style="cyan")
         table.add_column("Authors", style="dim", overflow="fold")
 
@@ -312,7 +312,7 @@ def write_html_report(
                     <span class="separator">|</span>
                     <span class="age">{age_text}</span>
                     <span class="separator">|</span>
-                    <span class="score"><span class="badge">RadarSci score</span><span class="value">{paper.relevance:.2f}</span></span>
+                    <span class="score"><span class="badge">giveLit score</span><span class="value">{paper.relevance:.2f}</span></span>
                 </div>
             </header>
             <p class="authors">{authors_text}</p>
@@ -327,7 +327,7 @@ def write_html_report(
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>RadarSci Report</title>
+    <title>giveLit Report</title>
     <style>
         :root {{
             --bg: #040404;
@@ -534,7 +534,7 @@ def write_html_report(
 </head>
 <body>
     <header class="page-header">
-        <h1>RadarSci</h1>
+        <h1>giveLit</h1>
         <ul class="meta-list">
             {meta_list}
         </ul>
@@ -544,7 +544,7 @@ def write_html_report(
         {' '.join(cards) if cards else '<p>No papers matched the filters.</p>'}
     </main>
     <footer>
-        Crafted with RadarSci — a radar for scientific literature.
+        Crafted with giveLit — give me literature.
     </footer>
 </body>
 </html>

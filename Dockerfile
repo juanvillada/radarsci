@@ -18,7 +18,7 @@ RUN { \
     echo "set -euo pipefail"; \
     cat /tmp/shell-hook; \
     echo 'if [[ $# -eq 0 || "$1" == -* ]]; then'; \
-    echo '  set -- python -m radarsci "$@"'; \
+    echo '  set -- python -m givelit "$@"'; \
     echo 'fi'; \
     echo 'exec "$@"'; \
   } > /app/entrypoint.sh \
@@ -37,9 +37,9 @@ COPY --from=build /app/entrypoint.sh /app/entrypoint.sh
 COPY src ./src
 COPY pixi.toml pixi.lock README.md ./
 
-# ensure tools in the pixi environment and module imports (radarsci) are found
+# ensure tools in the pixi environment and module imports (givelit) are found
 ENV PATH="/app/.pixi/envs/default/bin:${PATH}" \
     PYTHONPATH="/app/src"
 
 ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["python", "-m", "radarsci"]
+CMD ["python", "-m", "givelit"]

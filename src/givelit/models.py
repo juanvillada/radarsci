@@ -1,5 +1,5 @@
 """
-Core data structures used throughout RadarSci.
+Core data structures used throughout giveLit.
 """
 
 from __future__ import annotations
